@@ -1,0 +1,38 @@
+# Python and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Credentials and machine-specific configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.vscode/
+Thumbs.db
+.DS_Store
+
+# Downloaded papers, imagery, model weights, and generated experiments
+papers/
+data/
+checkpoints/
+runs/
+outputs/
+exports/
+*.part
+*.pdf
+*.tif
+*.tiff
+*.nc
+*.h5
+*.hdf5
+*.pt
+*.pth
+*.ckpt
+*.safetensors

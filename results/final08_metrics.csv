@@ -1,0 +1,5 @@
+﻿model,split,epoch,mean_iou,global_iou,f1,precision,recall
+rgb,test,18,0.2028,0.3698,0.5399,0.4374,0.7052
+rgb_nir,test,18,0.515,0.7247,0.8404,0.7507,0.9544
+rgb,bolivia,18,0.3337,0.4594,0.6296,0.4761,0.9293
+rgb_nir,bolivia,18,0.5793,0.7908,0.8832,0.8263,0.9484

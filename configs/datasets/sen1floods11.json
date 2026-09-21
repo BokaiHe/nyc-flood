@@ -1,0 +1,17 @@
+{
+  "hand": [
+    "v1.1/data/flood_events/HandLabeled/S1Hand/",
+    "v1.1/data/flood_events/HandLabeled/LabelHand/",
+    "v1.1/data/flood_events/HandLabeled/S2Hand/",
+    "v1.1/data/flood_events/HandLabeled/JRCWaterHand/",
+    "v1.1/data/flood_events/HandLabeled/S1OtsuLabelHand/"
+  ],
+  "weak": [
+    "v1.1/data/flood_events/WeaklyLabeled/S1Weak/",
+    "v1.1/data/flood_events/WeaklyLabeled/S2IndexLabelWeak/"
+  ],
+  "metadata": [
+    "v1.1/splits/flood_handlabeled/",
+    "v1.1/Sen1Floods11_Metadata.geojson"
+  ]
+}

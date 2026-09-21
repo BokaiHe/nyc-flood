@@ -1,0 +1,343 @@
+{
+  "roi_width_m": 1280,
+  "purpose": "Small inspection crops, no pixel segmentation labels",
+  "scenes": [
+    {
+      "kind": "s1_rtc",
+      "date": "2023-09-14",
+      "item_id": "S1A_IW_GRDH_1SDV_20230914T225135_20230914T225200_050330_060F40_rtc",
+      "item_url": "https://planetarycomputer.microsoft.com/api/stac/v1/collections/sentinel-1-rtc/items/S1A_IW_GRDH_1SDV_20230914T225135_20230914T225200_050330_060F40_rtc",
+      "bands": [
+        "vv",
+        "vh"
+      ],
+      "note": "Exploratory gamma0 RTC, not training-distribution-equivalent to Sen1Floods11 sigma0 dB. Sept 14 is an earlier reference, not confirmed dry ground truth.",
+      "sites": [
+        {
+          "sensor_name": "Q - Beach 84 St",
+          "sensor_id": "Q-beach-84-st-0me680",
+          "flood_start_time": "2023-09-26T20:11:52.000",
+          "flood_end_time": "2023-09-27T01:04:42.000",
+          "max_depth_inches": "16.26",
+          "duration_mins": "292.83",
+          "longitude": "-73.80996",
+          "latitude": "40.59136",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - Russell St 1",
+          "sensor_id": "Q-russell-st-1-07zqc0",
+          "flood_start_time": "2023-09-26T21:23:48.000",
+          "flood_end_time": "2023-09-27T01:12:26.000",
+          "max_depth_inches": "8.82",
+          "duration_mins": "228.64",
+          "longitude": "-73.831566",
+          "latitude": "40.654312",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - 102nd St/160th Ave",
+          "sensor_id": "Q-102nd-st-160th-ave-1a5ng0",
+          "flood_start_time": "2023-09-26T21:36:39.000",
+          "flood_end_time": "2023-09-26T23:22:47.000",
+          "max_depth_inches": "5.2",
+          "duration_mins": "106.14",
+          "longitude": "-73.831185",
+          "latitude": "40.658779",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - Davenport Ct 1",
+          "sensor_id": "Q-davenport-ct-1-07zks0",
+          "flood_start_time": "2023-09-26T21:51:12.000",
+          "flood_end_time": "2023-09-27T01:41:14.000",
+          "max_depth_inches": "7.28",
+          "duration_mins": "230.03",
+          "longitude": "-73.830559",
+          "latitude": "40.653387",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - 161st Ave/99th St",
+          "sensor_id": "Q-161st-ave-99th-st-1a5q80",
+          "flood_start_time": "2023-09-26T22:03:47.000",
+          "flood_end_time": "2023-09-26T23:21:38.000",
+          "max_depth_inches": "3.39",
+          "duration_mins": "77.85",
+          "longitude": "-73.833553",
+          "latitude": "40.656567",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - 1st St/104th St",
+          "sensor_id": "Q-1st-st-104th-st-1a5t00",
+          "flood_start_time": "2023-09-26T22:10:24.000",
+          "flood_end_time": "2023-09-27T01:12:39.000",
+          "max_depth_inches": "5.2",
+          "duration_mins": "182.23",
+          "longitude": "-73.828642",
+          "latitude": "40.655908",
+          "tidally_influenced_site": "Yes"
+        }
+      ]
+    },
+    {
+      "kind": "s1_rtc",
+      "date": "2023-09-26",
+      "item_id": "S1A_IW_GRDH_1SDV_20230926T225135_20230926T225200_050505_06153F_rtc",
+      "item_url": "https://planetarycomputer.microsoft.com/api/stac/v1/collections/sentinel-1-rtc/items/S1A_IW_GRDH_1SDV_20230926T225135_20230926T225200_050505_06153F_rtc",
+      "bands": [
+        "vv",
+        "vh"
+      ],
+      "note": "Exploratory gamma0 RTC, not training-distribution-equivalent to Sen1Floods11 sigma0 dB. Sept 14 is an earlier reference, not confirmed dry ground truth.",
+      "sites": [
+        {
+          "sensor_name": "Q - Beach 84 St",
+          "sensor_id": "Q-beach-84-st-0me680",
+          "flood_start_time": "2023-09-26T20:11:52.000",
+          "flood_end_time": "2023-09-27T01:04:42.000",
+          "max_depth_inches": "16.26",
+          "duration_mins": "292.83",
+          "longitude": "-73.80996",
+          "latitude": "40.59136",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - Russell St 1",
+          "sensor_id": "Q-russell-st-1-07zqc0",
+          "flood_start_time": "2023-09-26T21:23:48.000",
+          "flood_end_time": "2023-09-27T01:12:26.000",
+          "max_depth_inches": "8.82",
+          "duration_mins": "228.64",
+          "longitude": "-73.831566",
+          "latitude": "40.654312",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - 102nd St/160th Ave",
+          "sensor_id": "Q-102nd-st-160th-ave-1a5ng0",
+          "flood_start_time": "2023-09-26T21:36:39.000",
+          "flood_end_time": "2023-09-26T23:22:47.000",
+          "max_depth_inches": "5.2",
+          "duration_mins": "106.14",
+          "longitude": "-73.831185",
+          "latitude": "40.658779",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - Davenport Ct 1",
+          "sensor_id": "Q-davenport-ct-1-07zks0",
+          "flood_start_time": "2023-09-26T21:51:12.000",
+          "flood_end_time": "2023-09-27T01:41:14.000",
+          "max_depth_inches": "7.28",
+          "duration_mins": "230.03",
+          "longitude": "-73.830559",
+          "latitude": "40.653387",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - 161st Ave/99th St",
+          "sensor_id": "Q-161st-ave-99th-st-1a5q80",
+          "flood_start_time": "2023-09-26T22:03:47.000",
+          "flood_end_time": "2023-09-26T23:21:38.000",
+          "max_depth_inches": "3.39",
+          "duration_mins": "77.85",
+          "longitude": "-73.833553",
+          "latitude": "40.656567",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - 1st St/104th St",
+          "sensor_id": "Q-1st-st-104th-st-1a5t00",
+          "flood_start_time": "2023-09-26T22:10:24.000",
+          "flood_end_time": "2023-09-27T01:12:39.000",
+          "max_depth_inches": "5.2",
+          "duration_mins": "182.23",
+          "longitude": "-73.828642",
+          "latitude": "40.655908",
+          "tidally_influenced_site": "Yes"
+        }
+      ]
+    },
+    {
+      "kind": "s2_l2a",
+      "date": "2024-09-21",
+      "item_id": "S2B_18TWL_20240921_0_L2A",
+      "item_url": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2B_18TWL_20240921_0_L2A",
+      "bands": [
+        "blue",
+        "green",
+        "red",
+        "nir",
+        "swir16",
+        "swir22",
+        "scl"
+      ],
+      "note": "Native-grid L2A stored values for inspection; not L1C/TOA inputs for WorldFloods reproduction. Preserve STAC scale/offset and apply the documented convention before use.",
+      "sites": [
+        {
+          "sensor_name": "Q - Beach 84 St",
+          "sensor_id": "Q-beach-84-st-0me680",
+          "flood_start_time": "2024-09-21T13:26:00.000",
+          "flood_end_time": "2024-09-21T18:32:13.000",
+          "max_depth_inches": "21.69",
+          "duration_mins": "306.23",
+          "longitude": "-73.80996",
+          "latitude": "40.59136",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - Davenport Ct 1",
+          "sensor_id": "Q-davenport-ct-1-07zks0",
+          "flood_start_time": "2024-09-21T13:59:02.000",
+          "flood_end_time": "2024-09-21T20:41:21.000",
+          "max_depth_inches": "17.99",
+          "duration_mins": "402.31",
+          "longitude": "-73.830559",
+          "latitude": "40.653387",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - Russell St 1",
+          "sensor_id": "Q-russell-st-1-07zqc0",
+          "flood_start_time": "2024-09-21T14:16:35.000",
+          "flood_end_time": "2024-09-21T17:45:01.000",
+          "max_depth_inches": "12.76",
+          "duration_mins": "208.43",
+          "longitude": "-73.831566",
+          "latitude": "40.654312",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - 102nd St/160th Ave",
+          "sensor_id": "Q-102nd-st-160th-ave-1a5ng0",
+          "flood_start_time": "2024-09-21T14:30:31.000",
+          "flood_end_time": "2024-09-21T16:42:08.000",
+          "max_depth_inches": "8.43",
+          "duration_mins": "131.62",
+          "longitude": "-73.831185",
+          "latitude": "40.658779",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - 1st St/104th St",
+          "sensor_id": "Q-1st-st-104th-st-1a5t00",
+          "flood_start_time": "2024-09-21T14:46:55.000",
+          "flood_end_time": "2024-09-21T19:07:58.000",
+          "max_depth_inches": "12.13",
+          "duration_mins": "261.06",
+          "longitude": "-73.828642",
+          "latitude": "40.655908",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - 161st Ave/99th St",
+          "sensor_id": "Q-161st-ave-99th-st-1a5q80",
+          "flood_start_time": "2024-09-21T14:56:15.000",
+          "flood_end_time": "2024-09-21T16:56:20.000",
+          "max_depth_inches": "6.57",
+          "duration_mins": "120.08",
+          "longitude": "-73.833553",
+          "latitude": "40.656567",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "SI - Ridgewood Ave/Arthur Kill Rd",
+          "sensor_id": "SI-ridgewood-ave-arthur-kill-rd-20e7zc",
+          "flood_start_time": "2024-09-21T15:05:40.000",
+          "flood_end_time": "2024-09-21T16:37:02.000",
+          "max_depth_inches": "4.84",
+          "duration_mins": "91.37",
+          "longitude": "-74.166351",
+          "latitude": "40.560325",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - Church Rd/E 7th Rd",
+          "sensor_id": "Q-church-rd-e-7th-rd-1zdtxo",
+          "flood_start_time": "2024-09-21T15:32:12.000",
+          "flood_end_time": "2024-09-21T16:38:28.000",
+          "max_depth_inches": "3.46",
+          "duration_mins": "66.27",
+          "longitude": "-73.818352",
+          "latitude": "40.608545",
+          "tidally_influenced_site": "Yes"
+        }
+      ]
+    },
+    {
+      "kind": "s2_l2a",
+      "date": "2024-10-18",
+      "item_id": "S2B_18TWL_20241018_0_L2A",
+      "item_url": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2B_18TWL_20241018_0_L2A",
+      "bands": [
+        "blue",
+        "green",
+        "red",
+        "nir",
+        "swir16",
+        "swir22",
+        "scl"
+      ],
+      "note": "Native-grid L2A stored values for inspection; not L1C/TOA inputs for WorldFloods reproduction. Preserve STAC scale/offset and apply the documented convention before use.",
+      "sites": [
+        {
+          "sensor_name": "Q - Russell St 1",
+          "sensor_id": "Q-russell-st-1-07zqc0",
+          "flood_start_time": "2024-10-18T12:18:01.000",
+          "flood_end_time": "2024-10-18T16:02:12.000",
+          "max_depth_inches": "11.57",
+          "duration_mins": "224.18",
+          "longitude": "-73.831566",
+          "latitude": "40.654312",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - Brookville Blvd/ Snake Rd 1",
+          "sensor_id": "Q-brookville-blvd-rockaway-blvd-1-23ndo0",
+          "flood_start_time": "2024-10-18T12:41:37.000",
+          "flood_end_time": "2024-10-18T16:26:36.000",
+          "max_depth_inches": "15.24",
+          "duration_mins": "224.97",
+          "longitude": "-73.74448",
+          "latitude": "40.6439",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - Davenport Ct 1",
+          "sensor_id": "Q-davenport-ct-1-07zks0",
+          "flood_start_time": "2024-10-18T12:42:49.000",
+          "flood_end_time": "2024-10-18T17:14:45.000",
+          "max_depth_inches": "13.43",
+          "duration_mins": "271.94",
+          "longitude": "-73.830559",
+          "latitude": "40.653387",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "Q - 1st St/104th St",
+          "sensor_id": "Q-1st-st-104th-st-1a5t00",
+          "flood_start_time": "2024-10-18T12:49:18.000",
+          "flood_end_time": "2024-10-18T16:32:36.000",
+          "max_depth_inches": "10.71",
+          "duration_mins": "223.3",
+          "longitude": "-73.828642",
+          "latitude": "40.655908",
+          "tidally_influenced_site": "Yes"
+        },
+        {
+          "sensor_name": "BX - Ditmars St/Hunter Ave 2",
+          "sensor_id": "BX-ditmars-st-hunter-ave-1kwrk0",
+          "flood_start_time": "2024-10-18T14:33:19.000",
+          "flood_end_time": "2024-10-18T18:11:24.000",
+          "max_depth_inches": "7.28",
+          "duration_mins": "218.09",
+          "longitude": "-73.789528",
+          "latitude": "40.849297",
+          "tidally_influenced_site": "Yes"
+        }
+      ]
+    }
+  ]
+}

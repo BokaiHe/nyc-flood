@@ -1,0 +1,7 @@
+-r requirements-data.txt
+matplotlib
+nbformat
+nbconvert
+ipykernel
+# Use the CPU build locally; retain a CUDA build for the cloud training notebook.
+torch>=2.3

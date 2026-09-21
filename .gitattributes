@@ -1,0 +1,11 @@
+* text=auto
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.csv text eol=lf
+*.yml text eol=lf
+*.sh text eol=lf
+*.ris text eol=lf whitespace=-blank-at-eof
+*.txt text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
