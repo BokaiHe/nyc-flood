@@ -36,3 +36,9 @@ exports/
 *.pth
 *.ckpt
 *.safetensors
+
+# Public edition: English content, no presentation files.
+*.ppt
+*.pptx
+docs/00_project_summary.html
+notebooks/00_project_summary.ipynb

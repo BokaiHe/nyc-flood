@@ -20,19 +20,7 @@ def code(text):
     cells.append(nbformat.v4.new_code_cell(text.strip(), metadata={"jupyter": {"source_hidden": True}}))
 
 
-md('''
-<div class="summary-hero">
-<div class="eyebrow">PROJECT SUMMARY · SENTINEL-2 / U-NET</div>
-<h1>从卫星影像到水体分割</h1>
-<p class="subtitle">RGB与RGB＋NIR对照实验 · 纽约市应用案例</p>
-<p><a href="00_project_summary_en.ipynb">English summary</a></p>
-<p>以公开标注数据完成模型训练与评价，再将固定模型应用到纽约市，观察增加近红外信息带来的变化。</p>
-</div>
-
-**核心问题：同样使用U-Net，增加一个近红外通道，能否改善水体分割？这种改善在NYC案例中如何体现？**
-
-本报告按 **数据 → 方法 → 实验 → 定量结果 → NYC应用 → 结论** 展开。主结果统一采用最终08实验，历史调试过程保留在原Notebook中。
-''')
+md('<div class="summary-hero">\n<div class="eyebrow">PROJECT SUMMARY · SENTINEL-2 / U-NET</div>\n<h1>Satellite Water Segmentation</h1>\n<p class="subtitle">RGB versus RGB+NIR · A New York City case study</p>\n<p>Train and evaluate on public pixel labels, then apply the fixed models to NYC imagery and compare their outputs with ground observations.</p>\n</div>\n\n**Research question: How does adding near-infrared information change U-Net water segmentation, and how does this difference appear in an NYC application?**\n\nThe report follows **data → method → experiment → benchmark results → NYC application → conclusions**. All main model results use the final experiment in Notebook 08.\n')
 code('''
 from pathlib import Path
 import csv, json, html
@@ -95,21 +83,7 @@ display(Image(filename=str(ROOT / 'outputs/method_figures/figure_1.png')))
 caption('Overview | (a) RGB and RGB+NIR experiments on Sen1Floods11; image-mean water IoU averages the water-class IoU across images. (b) Fixed-model application to NYC, illustrated at Davenport. FloodNet counts summarize 13 wet site–date pairs across two dates; these are point detections, distinct from pixel metrics. Water masks include permanent water.')
 ''')
 
-md('''
-## 01 · 数据：用公开标签训练，用NYC场景观察应用效果
-
-实验包含两类互补数据。**Sen1Floods11提供影像和人工像素标签，用于训练及定量评价；NYC提供同期影像和地面积水记录，用于应用分析。**
-
-| 数据部分 | 使用范围 | 在研究中的作用 |
-|---|---|---|
-| Sen1Floods11人工标注子集 | 446组Sentinel-2影像与标签，原图512×512 | 建立水体分割模型并计算测试指标 |
-| 输入通道 | RGB：B4/B3/B2；RGB＋NIR：B4/B3/B2/B8 | 构成三通道与四通道对照 |
-| 参考标签 | 水体=1、非水体=0、忽略区域=−1 | 在共同有效像素上训练和评价 |
-| NYC案例 | 2024-09-21与2024-10-18；13个站点—日期、10个站点 | 检查模型在城市沿海环境的输出 |
-| FloodNet | 与影像过境时间匹配的积水深度序列 | 将模型输出与地面点观测联系起来 |
-
-下面展示同一幅训练影像的RGB、NIR、人工标签和标签叠加。增加NIR并没有改变标签或研究对象，而是为同一分割任务增加一层光谱信息。
-''')
+md('## 01 · Data: labeled imagery and an NYC application\n\nTwo complementary sources support the study. **Sen1Floods11 supplies imagery and pixel labels for supervised training and evaluation. NYC imagery and FloodNet measurements support the application analysis.**\n\n| Component | Coverage | Role |\n|---|---|---|\n| Sen1Floods11 hand-labeled subset | 446 Sentinel-2 image/label pairs, 512 × 512 pixels | Training and quantitative segmentation evaluation |\n| Input bands | RGB: B4/B3/B2; RGB+NIR: B4/B3/B2/B8 | A three-band versus four-band comparison |\n| Pixel labels | Water = 1, non-water = 0, ignored = -1 | Supervision and evaluation on shared valid pixels |\n| NYC cases | 13 site–date windows at 10 sites; 21 September and 18 October 2024 | Application to coastal urban scenes |\n| FloodNet | Depth sequences aligned with satellite overpass times | Ground observations at the sensor locations |\n\nThe training example below shows RGB, NIR, the human label and a label overlay. Adding NIR changes the available spectral information while retaining the same task and target labels.\n')
 code('''
 display(Image(filename=str(PAPER['training'])))
 caption('Figure 1 | India_285297 training example: RGB, NIR, human labels and the water-label overlay. RGB uses a 2–98% display stretch; NIR uses a fixed reflectance range of 0–0.6. Labels are unchanged.')
@@ -117,65 +91,21 @@ display(Image(filename=str(PAPER['splits'])))
 caption('Figure 2 | Official data partition: 252 training, 89 validation, 90 test and 15 Bolivia images. Both experiments use the same partition.')
 ''')
 
-md('''
-## 02 · 方法：相同U-Net，比较三通道与四通道输入
-
-U-Net先通过编码器提取由局部到整体的影像特征，再通过解码器恢复空间细节。跳跃连接把浅层的位置信息传回解码端，最终为每个像素输出水体与非水体两类分数。
-
-采用WorldFloods公开实现中的U-Net结构：**64 → 128 → 256 → 512**通道，三次下采样，双线性上采样，卷积后使用ReLU。将公开方法适配到Sen1Floods11和本项目的3/4通道输入。
-''')
+md('## 02 · Method: the same U-Net with three or four bands\n\nU-Net combines an encoder that extracts features at progressively coarser scales with a decoder that restores spatial detail. Skip connections carry fine-scale features into the decoder. The output is a non-water/water score pair for every pixel.\n\nWe adapt the public WorldFloods U-Net implementation: **64 → 128 → 256 → 512** channels, three downsampling stages, bilinear upsampling and ReLU activations. The two models use three or four input bands and learn their weights independently.\n')
 code('''
 display(Image(filename=str(ROOT / 'outputs/method_figures/figure_2.png')))
 caption('Figure 3 | U-Net training and inference. RGB uses B4/B3/B2; RGB+NIR adds B8. Both use TRAIN-derived standardization. Weighted CE and Dice use valid labels. Training pair: India_285297. Inference inputs and RGB+NIR outputs: Davenport, 21 September 2024. The two models share the architecture and training protocol, with independently learned weights.')
 ''')
-md('''
-从输入到输出的处理是：
+md("The processing sequence is:\n\n**Image DN → reflectance → training-set standardization → U-Net → water probability → water/non-water mask.**\n\n| Component | Implementation | Purpose |\n|---|---|---|\n| Band comparison | B4/B3/B2 versus B4/B3/B2/B8 | Measure the effect of adding NIR |\n| Reflectance conversion | Training: DN/10000; these NYC products: (DN−1000)/10000 | Respect each product's encoding |\n| Standardization | Per-band training mean and standard deviation | Keep preprocessing fixed during evaluation and application |\n| Valid pixels | Shared label and four-band validity masks | Evaluate both models on the same pixels |\n| Output | Two logits per pixel; softmax probabilities and argmax masks | Convert model scores into segmentation outputs |\n| NYC windows | 512 × 512 context; central 128 × 128 export at 10 m | Map a 1.28 km neighborhood with surrounding context |\n\nThe models share the architecture, split, training budget and selection rule, apart from their input channels and corresponding first-layer dimensions.\n")
 
-**影像DN → 反射率 → 训练集统计量标准化 → U-Net → 水体概率 → 水／非水掩膜。**
-
-| 环节 | 选择 | 理由 |
-|---|---|---|
-| 通道组合 | B4/B3/B2 vs B4/B3/B2/B8 | 直接检验增加NIR后的表现 |
-| 数值处理 | 训练数据DN/10000；本批NYC按产品元数据(DN−1000)/10000 | 将各自产品编码转换为反射率 |
-| 标准化 | 使用训练集共同有效像素的逐通道均值、标准差 | 两组遵循同一预处理原则，应用时保持固定 |
-| 有效像素 | 两组共用有效标签及四波段有效区域 | 保持评价像素一致 |
-| 输出 | 每像素2类logits；softmax得到水体概率，argmax得到掩膜 | 将连续模型输出转换为分割结果 |
-| NYC展示 | 512×512输入，导出中心128×128、10m网格 | 利用周边上下文，展示站点附近1.28km窗口 |
-
-两组分别训练。除输入通道及相应输入层外，共享结构、划分、训练预算和选模规则。
-''')
-
-md('''
-## 03 · 实验：采用公开实现设置，完成固定预算对照
-
-每张512×512训练图划分为4个不重叠的256×256窗口，共1008个训练窗口。两组在RTX 4090上各训练25轮，以验证集Dice损失选择最佳权重；实际选中的轮次均为18。
-
-| 参数 | 最终设置 | 选择理由 |
-|---|---|---|
-| 优化器与学习率 | Adam，1×10⁻⁴；weight decay=0 | 沿用所选公开实现配置 |
-| Batch size / Epochs | 32 / 25 | 使用发布配置中的训练预算，两组一致 |
-| 损失函数 | 0.5×加权交叉熵＋0.5×Dice | 同时优化像素分类与分割重叠 |
-| 类别权重 | 训练有效像素N/n_c：非水约1.105、水约10.515 | 依据本数据的类别比例计算 |
-| 学习率调度 | 验证Dice不改善时衰减；factor=0.5、patience=2 | 根据验证反馈调整步长 |
-| 最佳权重 | 验证Dice损失最小 | 统一两组模型选择规则 |
-| Seed / 增强 | 12 / 无额外增强 | 固定实现条件，使用同形状层的共同初始权重 |
-| 执行方式 | 单卡、混合精度 | 在4090上完成实验 |
-
-评价同时报告平均水体IoU和全局水体IoU：前者逐幅计算再平均，后者汇总全部有效像素后计算。F1综合精确率与召回率；Precision关注误报，Recall关注漏检。
-''')
+md('## 03 · Experiment: a fixed public-method protocol\n\nEach 512 × 512 training image supplies four non-overlapping 256 × 256 windows, giving **1008 training windows**. Both models trained for **25 epochs on an RTX 4090**. Minimum validation Dice loss selected epoch **18** for each model.\n\n| Setting | Final value | Basis |\n|---|---|---|\n| Optimizer | Adam, learning rate 1×10⁻⁴, weight decay 0 | Selected public implementation |\n| Batch size / epochs | 32 / 25 | Published training budget, shared by both models |\n| Objective | 0.5 weighted cross-entropy + 0.5 Dice | Pixel classification and overlap |\n| Class weights | Training N/n_c; approximately 1.105 non-water and 10.515 water | Class counts in the current dataset |\n| Scheduler | Validation Dice plateau; factor 0.5, patience 2 | Validation-driven learning-rate adjustment |\n| Model selection | Minimum validation Dice loss | The same rule for both inputs |\n| Seed / augmentation | 12 / no extra augmentation | Fixed conditions and shared matching-layer initialization |\n| Runtime | Single GPU, mixed precision | Execution on the available hardware |\n\n**Image-mean water IoU** averages image-level overlap; **global water IoU** pools valid pixels before computing overlap. Precision reflects false positives, recall reflects missed water, and F1 combines both. The label mask is applied to both probabilities and targets in Dice, a documented adaptation of the public loss.\n')
 code('''
 display(Image(filename=str(OUT.parent / 'paper_figures/03_training_record.png')))
 caption('Figure 4 | Training and validation loss (a) and validation mean water IoU (b). Complete curve panels are reassembled from the original cloud record; curve pixels, axis values and colors are unchanged. Numerical epoch logs were not supplied.')
 ''')
-md('''
-从训练过程看，两组损失均随训练降低，RGB＋NIR的验证IoU维持在更高水平。下面使用同一实验选出的最佳权重，比较公开测试集的最终表现。
-''')
+md('Both losses decrease during training, while RGB+NIR maintains higher validation IoU. The next section compares the validation-selected checkpoints on the same public test splits.\n')
 
-md('''
-## 04 · 公开测试结果：增加NIR后，分割指标提高
-
-先看90幅正式测试图，再看15幅Bolivia专项测试图。所有数值来自最终08实验，下面的图和表采用统一指标口径。
-''')
+md('## 04 · Benchmark results: the contribution of NIR\n\nEvaluate the **90-image test split** and the **15-image Bolivia split** separately. All values below come from the final Notebook 08 experiment and use the same metric definitions.\n')
 code('''
 # Final notebook-08 cloud table, transcribed from the supplied original screenshot.
 # The original is archived in source_images/metrics_table.png.
@@ -193,30 +123,14 @@ table([{**r, 'model': labels[r['model']], 'split': r['split'].title()} for r in 
 display(Image(filename=str(PAPER['benchmark'])))
 caption('Table 1 / Figure 5 | Final test metrics in a selectable table; both IoU columns refer to water. Panels (a–b) compare all five metrics for the same selected weights. Single run per input, seed 12; no between-run uncertainty is estimated. Values are transcribed from the original final-experiment table.')
 ''')
-md('''
-正式测试集上，RGB＋NIR的平均水体IoU从 **0.2028提高到0.5150**，F1从 **0.5399提高到0.8404**。Precision和Recall也同时提高，说明本次结果同时改善了误报与漏检表现。
-
-Bolivia专项测试中也观察到同方向的提升。两种指标口径互为补充：较高的全局IoU说明总体像素重叠较好，而逐图平均IoU仍提示不同场景之间存在表现差异。
-''')
+md('On the test split, adding NIR increases image-mean water IoU from **0.2028 to 0.5150** and F1 from **0.5399 to 0.8404**. Precision and recall also increase, indicating improvements in both false-positive and missed-water behavior in this experiment.\n\nThe Bolivia split shows the same direction of improvement. Global and mean IoU describe complementary aspects of performance: pooled pixel overlap and variation across individual images.\n')
 code('''
 display(Image(filename=str(OUT.parent / 'paper_figures/04b_test_prediction_record.png')))
 caption('Figure 6 | Ghana_313799: RGB, NIR, labels and model predictions, reassembled from complete panels in the original cloud-rendered record. Only surrounding layout and headings have changed; no predicted pixels are reconstructed.')
 ''')
-md('''
-这幅示例中，RGB＋NIR对右下方水体的恢复更接近人工标签，细窄水道及局部边界仍有遗漏。定量指标说明整体差异，图像对照帮助定位差异发生在哪里。
+md("In this example, RGB+NIR recovers the lower-right water body more closely to the human label, while narrow channels and some boundaries remain incomplete. The benchmark metrics quantify the difference; the image comparison shows where it occurs.\n\nWe next apply the two fixed models to NYC's urban coastal scenes.\n")
 
-接下来将这两组固定模型应用到NYC，观察面对城市、海湾与街道积水混合场景时的输出。
-''')
-
-md('''
-## 05 · NYC应用：把固定模型带到城市沿海场景
-
-选取2024年9月21日和10月18日的Sentinel-2 L1C影像，覆盖13个站点—日期窗口。模型输出水体概率和水／非水掩膜；FloodNet提供相同位置、相近时刻的地面积水测量。
-
-NYC窗口包含海湾、河道、建筑和街道。**蓝色表示模型预测水体，红十字表示积水传感器位置。** 这让我们既能观察水体空间结构，也能检查观测点对应像素的输出。
-
-下面选Davenport同一站点的两期结果，以固定地点展示日期间变化。
-''')
+md('## 05 · NYC application: coastal urban water mapping\n\nSentinel-2 L1C imagery from **21 September and 18 October 2024** covers 13 site–date windows. The models produce water probabilities and masks, while FloodNet records ground-level water depth at the corresponding sensor locations and times.\n\nThe windows contain bays, channels, buildings and streets. **Blue denotes predicted water; red crosses locate the FloodNet sensors.** This supports both a spatial view of water predictions and a comparison at observed locations.\n\nThe following panels show Davenport on both dates, holding the location fixed to illustrate temporal variation.\n')
 code('''
 display(Image(filename=str(PAPER['locator'])))
 caption('Figure 7 | (a) Ten NYC sensor locations. (b) Davenport: 5.12 km input context and the central inference window. (c) RGB+NIR prediction on 21 September 2024. Scale bars follow the raster geotransform. Borough outlines: NYC Department of City Planning; contextual cartography only.')
@@ -225,13 +139,7 @@ caption('Figure 8 | Davenport on two observation dates. Shared columns compare R
 probability_image = base64.b64encode(PAPER['probability'].read_bytes()).decode()
 display(HTML('<details><summary>Supplementary probability maps</summary><img alt="Davenport water probabilities" src="data:image/png;base64,' + probability_image + '"><p class="caption">Both dates and both models use the same probability scale, 0–1.</p></details>'))
 ''')
-md('''
-## 06 · 地面观测对照：从空间图像回到具体站点
-
-将卫星目录的UTC过境时间与FloodNet深度序列对齐，取前后两条实测水深作为依据。13个站点像素均可用，过境前后测量均超过1cm，相邻包围测量间隔为62–188秒。
-
-下图先对比两种模型在积水观测点的检出情况，再用热图展示全部13组概率。RGB＋NIR检出9组，RGB检出1组；两个日期的表现存在差异。
-''')
+md('## 06 · Ground observations: comparison at sensor locations\n\nAlign catalog overpass times in UTC with FloodNet depth sequences and retain the measurements immediately before and after each overpass. All 13 sensor pixels are usable, and both bracketing measurements exceed 1 cm; measurement intervals range from **62 to 188 seconds**.\n\nThe bars summarize wet-site detections; the heatmap retains all 13 probability pairs. **RGB+NIR detects 9 pairs, compared with 1 for RGB**, with different results across the two dates.\n')
 code('''
 display(Image(filename=str(PAPER['points'])))
 caption('Figure 9 | Ground-observation comparison. (a) Detected / observed wet pairs; bar heights show counts, with the observed sample size in each label. (b) All 13 pairs on a shared probability scale; * marks the exported water classification. IDs 09-1–09-8 and 10-1–10-5 refer to September 21 and October 18, 2024. Site names and measured depths are listed below.')
@@ -248,42 +156,7 @@ display(HTML('<details><summary>All 13 observations: sites, depths and model pro
              '<div class="table-scroll"><table><thead><tr>'+''.join('<th>'+h+'</th>' for h in headers)+
              '</tr></thead><tbody>'+''.join(detail_rows)+'</tbody></table></div></details>'))
 ''')
-md('''
-NYC案例中，RGB＋NIR在更多积水观测点对应像素上给出水体判别；同时，表现随日期和地点变化。以Davenport为例，9月同期水深约45cm、NIR模型判水；10月同期约25cm、两个模型均判非水。这一例子展示了城市街道积水应用中仍需面对的尺度与场景差异。
-
-## 07 · 最终结论
-
-**第一，完成了可复现的方法流程。** 从公开标签数据、U-Net训练到像素评价，再到NYC实际影像推理，构成完整的实验与应用链路。
-
-**第二，NIR在本次对照实验中带来明确收益。** 相同协议下，公开测试集的平均水体IoU、全局IoU、F1、Precision和Recall均提高，Bolivia专项测试也呈同方向变化。
-
-**第三，NYC案例呈现了应用效果及场景差异。** 固定模型能够输出城市沿海水体分布，RGB＋NIR在更多同期积水点对应像素上判水，也存在未检出的点位。
-
-本项目的成果定位为 **“卫星水体分割的通道对照与NYC应用案例”**。公开测试提供定量分割评价，NYC提供影像展示和点观测对照。NYC输出包含原有海湾、河道；这13个有积水观测点用于探索性分析，尚不代表全市分割精度或新增淹没范围。
-
----
-
-### 数据与方法来源
-
-- **训练与标签：** [Sen1Floods11作者数据仓库](https://github.com/cloudtostreet/Sen1Floods11)。
-- **模型方法：** [WorldFloods论文](https://doi.org/10.1038/s41598-021-86650-z)与[所用U-Net源码版本](https://github.com/spaceml-org/ml4floods/blob/f21129d1de0786eddb6b95118ccc47598fc3c40b/ml4floods/models/architectures/unets.py)；结构与发布配置适配到本项目数据与输入通道。
-- **NYC地面观测：** [FloodNet方法与数据说明](https://www.floodnet.nyc/methodology)、[街道积水事件表](https://data.cityofnewyork.us/d/aq7i-eu5q)。
-- **制图参考：** [Global flood extent segmentation in optical satellite images](https://pmc.ncbi.nlm.nih.gov/articles/PMC10661555/)中的紧凑影像组图、地图尺度展示与三线表；以本项目实际数据重新编排，未引入论文中的实验结果。
-- **地图底图：** [NYC Department of City Planning borough boundaries](https://data.cityofnewyork.us/City-Government/Borough-Boundaries/gthc-hcne)，仅用于站点位置示意。
-- **流程图设计：** 参考WorldFloods [2021论文](https://doi.org/10.1038/s41598-021-86650-z)与[2023论文图5](https://doi.org/10.1038/s41598-023-47595-7)的流程布局，以本项目实际方法、影像与预测重新绘制。可编辑PPT为 `exports/nyc_method_figures.pptx`。
-- **项目结果：** 最终08云端曲线、指标及预测截图；11实际预测回传包；12逐点时空匹配结果。训练曲线保留原图，指标按截图转录；NYC点位数据读取实际CSV与配置。
-
-### 实验记录入口
-
-| 内容 | 对应Notebook |
-|---|---|
-| 最终模型训练与测试 | 08_train_public_unet_rgb_vs_rgb_nir |
-| 逐图结果与错误分析 | 09_results_and_error_analysis |
-| NYC输入与固定模型推理 | 11_nyc_l1c_inference |
-| 全部NYC点位时空匹配 | 12_nyc_floodnet_point_validation |
-
-*本Summary整合现有实验成果，不启动新的训练。原始调试记录与历史实验继续保留。*
-''')
+md("RGB+NIR predicts water at more of the observed wet-site pixels, although performance varies by date and location. At Davenport, the September measurements are approximately 45 cm and RGB+NIR predicts water; in October, the measurements are approximately 25 cm and neither model predicts water. This illustrates the scene and scale challenges of applying satellite water segmentation to street flooding.\n\n## 07 · Conclusions\n\n**A complete experimental workflow.** The project connects labeled satellite data, U-Net training, pixel-level evaluation, NYC inference and ground-observation matching.\n\n**NIR improves the final benchmark comparison.** Under the shared protocol, RGB+NIR improves mean/global water IoU, F1, precision and recall on both the test and Bolivia splits.\n\n**NYC demonstrates application behavior and variation.** The fixed models map coastal water and give different responses at co-temporal wet-site observations. RGB+NIR detects more of the selected pairs, with remaining disagreements.\n\nThe study is framed as **a spectral-input comparison for satellite water segmentation, with an NYC application case study**. Public labels provide quantitative segmentation evaluation; NYC provides spatial examples and a selected wet-site comparison. NYC predictions include permanent bays and channels, so these observations do not establish citywide segmentation accuracy or newly inundated area.\n\n### Data and method sources\n\n- **Training imagery and labels:** [Sen1Floods11](https://github.com/cloudtostreet/Sen1Floods11).\n- **Model:** [WorldFloods](https://doi.org/10.1038/s41598-021-86650-z) and the [pinned U-Net implementation](https://github.com/spaceml-org/ml4floods/blob/f21129d1de0786eddb6b95118ccc47598fc3c40b/ml4floods/models/architectures/unets.py), adapted to this dataset and input comparison.\n- **Ground observations:** [FloodNet methodology](https://www.floodnet.nyc/methodology) and the [NYC street-flood event data](https://data.cityofnewyork.us/d/aq7i-eu5q).\n- **Figure design:** [Global flood extent segmentation in optical satellite images](https://pmc.ncbi.nlm.nih.gov/articles/PMC10661555/) informed the compact image plates, map context and three-rule tables. Figures use this project's data and results.\n- **Map context:** [NYC Department of City Planning borough boundaries](https://data.cityofnewyork.us/City-Government/Borough-Boundaries/gthc-hcne).\n- **Workflow diagrams:** original project diagrams informed by the WorldFloods [2021](https://doi.org/10.1038/s41598-021-86650-z) and [2023](https://doi.org/10.1038/s41598-023-47595-7) layouts.\n- **Experimental evidence:** original Notebook 08 cloud screenshots, returned Notebook 11 prediction files and Notebook 12 matched observations. Benchmark numbers were transcribed from the original table; NYC values are read from the returned CSVs and rasters.\n\n### Reproducible notebook workflow\n\n| Stage | Notebook |\n|---|---|\n| Data overview | [01 · Data preview](01_data_preview.ipynb) |\n| Final training and testing | [08 · Public U-Net](08_train_public_unet_rgb_vs_rgb_nir.ipynb) |\n| Image-level results and errors | [09 · Error analysis](09_results_and_error_analysis.ipynb) |\n| NYC inputs and fixed-model inference | [11 · NYC inference](11_nyc_l1c_inference.ipynb) |\n| Spatial and temporal observation matching | [12 · FloodNet comparison](12_nyc_floodnet_point_validation.ipynb) |\n\nNotebooks 02–07 document the earlier experiments and diagnostics; Notebook 10 records the initial input audit. This Summary compiles existing results without training a model.\n")
 
 code("""
 gallery = ''.join('<img alt="NYC site-date atlas" src="data:image/png;base64,' + base64.b64encode(PAPER[f'gallery{i}'].read_bytes()).decode() + '">' for i in range(1,4))
@@ -293,7 +166,7 @@ display(HTML('<details><summary>Supplementary atlas: all 13 NYC site–date wind
 nb = nbformat.v4.new_notebook(cells=cells)
 nb.metadata.kernelspec = {'display_name':'Python 3 (ipykernel)','language':'python','name':'python3'}
 nb.metadata.language_info = {'name':'python'}
-p = ROOT / 'notebooks/00_project_summary.ipynb'
+p = ROOT / 'notebooks/00_project_summary_en.ipynb'
 km = KernelManager(kernel_name='python3')
 km.kernel_spec.argv = [sys.executable, '-m', 'ipykernel_launcher', '-f', '{connection_file}']
 NotebookClient(nb, km=km, timeout=120, resources={'metadata':{'path':str(ROOT)}}).execute()
@@ -302,7 +175,7 @@ body, _ = HTMLExporter(exclude_input=True, exclude_input_prompt=True, exclude_ou
 body = re.sub(r'<script\b[^>]*>[\s\S]*?</script>', '', body, flags=re.IGNORECASE)
 css = '''
 <style>
-:root { --jp-ui-font-family: Arial,'Microsoft YaHei',sans-serif; --jp-content-font-family: Arial,'Microsoft YaHei',sans-serif; }
+:root { --jp-ui-font-family: Arial,sans-serif; --jp-content-font-family: Arial,sans-serif; }
 body {background:white!important;color:#151515;}
 main {max-width:1100px;margin:22px auto!important;padding:24px 36px!important;background:white;border-radius:0;box-shadow:none;}
 .jp-Notebook,.jp-Cell,.jp-OutputArea-output {padding:0!important;}
@@ -328,11 +201,8 @@ summary {cursor:pointer;font-weight:600;font-size:14px;}
 </style>
 '''
 body = body.replace('</head>', css + '</head>')
-body = body.replace('<title>Notebook</title>', '<title>卫星水体分割 · 项目Summary</title>')
+body = body.replace('<title>Notebook</title>', '<title>Satellite Water Segmentation · Project Summary</title>')
 body = re.sub(r'href="(\d\d_[^"/]+\.ipynb)"', r'href="../notebooks/\1"', body)
-(ROOT / 'exports/00_project_summary.html').write_text(body, encoding='utf-8')
+(ROOT / 'exports/00_project_summary_en.html').write_text(body, encoding='utf-8')
 print(p)
-print(ROOT / 'exports/00_project_summary.html')
-from summary_english import write_english_summary
-print(write_english_summary(nb, ROOT, css))
 print(ROOT / 'exports/00_project_summary_en.html')

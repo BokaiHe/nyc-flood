@@ -1,7 +1,7 @@
 # Reproduction guide
 
 The repository separates executable experiments from a lightweight record of completed results.
-The HTML reports can be opened locally after cloning, without Python. Their tables are selectable.
+The English HTML report can be opened locally after cloning, without Python. Its tables are selectable.
 The repository includes no satellite dataset, model weights, Python environment or cloud run directory.
 
 ## Setup
@@ -65,11 +65,6 @@ point_comparison(points)
 The full report builder also needs the original local imagery, NYC prediction rasters, map
 boundaries and source figures at the paths stated in its code. It is not a data downloader.
 `scripts/export_notebooks.py` exports available notebook outputs without training.
-
-The editable diagrams are in `docs/figures/nyc_method_figures.pptx`. Their optional JavaScript
-authoring script uses `@oai/artifact-tool`; point `RUNTIME_NODE_MODULES` to a compatible installation
-and copy `figure_sources/method_assets` into `outputs/method_figures/assets` before using it.
-This authoring runtime is not needed to run the scientific experiments or view the report.
 
 ## Data and method attribution
 

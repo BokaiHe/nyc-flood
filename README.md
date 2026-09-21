@@ -2,7 +2,7 @@
 
 **RGB versus RGB+NIR U-Net on Sen1Floods11, followed by application to New York City Sentinel-2 imagery and comparison with FloodNet ground observations.**
 
-[English report](docs/00_project_summary_en.html) · [中文报告](docs/00_project_summary.html) · [Reproduction guide](docs/reproduction.md) · [Result CSVs](results/)
+[English report](docs/00_project_summary_en.html) · [Reproduction guide](docs/reproduction.md) · [Result CSVs](results/)
 
 Download or clone the repository and open either HTML report in a browser. Keep its `docs/assets/` image folder alongside it.
 
@@ -45,11 +45,11 @@ Notebook 08 is self-contained. Earlier diagnostics are retained as concise exper
 
 ## Repository contents
 
-- `notebooks/`: English experiments and bilingual Summary sources.
+- `notebooks/`: English experiments and Summary source.
 - `scripts/`, `configs/`: data preparation, plotting and export code.
 - `results/`: benchmark metrics and all 13 matched observations.
-- `docs/`: lightweight bilingual reports, shared images and reproduction notes.
-- `figure_sources/`: original recorded panels and diagram thumbnails; editable PPT in `docs/figures/`.
+- `docs/`: a lightweight English report, shared images and reproduction notes.
+- `figure_sources/`: original recorded training and prediction panels.
 
 Satellite data, trained weights, local environments, downloaded papers and temporary outputs are excluded. The historical final-08 checkpoint and numeric epoch logs are not distributed; retraining creates a new run. Training curves in the report preserve the original record.
 
