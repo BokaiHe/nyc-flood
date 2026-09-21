@@ -45,7 +45,7 @@ Notebook 08 is self-contained. Earlier diagnostics are retained as concise exper
 
 ## Repository contents
 
-- `notebooks/`: English experiments and Summary source.
+- `notebooks/`: Experiments and Summary source.
 - `scripts/`, `configs/`: data preparation, plotting and export code.
 - `results/`: benchmark metrics and all 13 matched observations.
 - `docs/`: a lightweight English report, shared images and reproduction notes.
