@@ -1,6 +1,6 @@
 # Reproduction guide
 
-The repository separates executable experiments from a lightweight record of completed results.
+The repository includes executable experiment code and saved notebook outputs for direct GitHub viewing. Notebook 00, 01, 10 and 12 were refreshed locally; 05 replays returned epoch CSVs; 08–09 display labeled final-experiment records; 11 includes refreshed input previews and all 13 returned inference images. Historical 02–04 and 06–07 remain source-only. No training or checkpoint inference was rerun during this publication update.
 The English HTML report can be opened locally after cloning, without Python. Its tables are selectable.
 The repository includes no satellite dataset, model weights, Python environment or cloud run directory.
 
@@ -77,3 +77,5 @@ boundaries and source figures at the paths stated in its code. It is not a data 
 
 Figures use project data and model outputs. Dataset and third-party implementation terms remain
 with their respective sources; publication of this repository does not relicense them.
+
+Notebook display images are limited to 1280 pixels in width; larger panels use JPEG display copies to keep GitHub previews lightweight. Small charts retain PNG. Original local figures and analysis rasters are unchanged.

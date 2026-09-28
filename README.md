@@ -2,7 +2,7 @@
 
 **RGB versus RGB+NIR U-Net on Sen1Floods11, followed by application to New York City Sentinel-2 imagery and comparison with FloodNet ground observations.**
 
-[English report](docs/00_project_summary_en.html) · [Reproduction guide](docs/reproduction.md) · [Result CSVs](results/)
+[View Summary with figures](notebooks/00_project_summary_en.ipynb) · [English HTML report](docs/00_project_summary_en.html) · [Reproduction guide](docs/reproduction.md) · [Result CSVs](results/)
 
 Download or clone the repository and open either HTML report in a browser. Keep its `docs/assets/` image folder alongside it.
 
@@ -41,7 +41,7 @@ RGB classified **1/13** observed wet sensor pixels as water; RGB+NIR classified 
 | [11 · NYC inference](notebooks/11_nyc_l1c_inference.ipynb) | Apply trained models to matched L1C inputs |
 | [12 · Ground comparison](notebooks/12_nyc_floodnet_point_validation.ipynb) | Match predictions to FloodNet observations |
 
-Notebook 08 is self-contained. Earlier diagnostics are retained as concise experiment history, not required stages. Notebook outputs are cleared in Git; completed evidence is in the HTML reports, source figures and small result CSVs. See the [reproduction guide](docs/reproduction.md) for setup, downloads and checkpoint requirements.
+Notebook 08 is self-contained. Earlier diagnostics are retained as concise experiment history, not required stages. Saved figures and tables are included in the notebooks for direct GitHub viewing. Local analysis is rerun where inputs are available; recorded cloud results are explicitly labeled. Training and checkpoint inference have not been rerun. Historical notebooks 02–04 and 06–07 remain source-only because their run artifacts are unavailable locally. See the [reproduction guide](docs/reproduction.md) for setup, downloads and checkpoint requirements.
 
 ## Repository contents
 
